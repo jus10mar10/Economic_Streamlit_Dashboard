@@ -35,3 +35,5 @@ fig = fig.update_layout(legend=dict(
 # legend title
 fig = fig.update_layout(legend_title_text='Effective Date')
 st.plotly_chart(fig)
+
+st.write('Data Source: U.S. Department of the Treasury')
