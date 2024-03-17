@@ -37,7 +37,7 @@ fig.update_layout(
     xaxis_tickangle=-45,  # Rotate x-axis labels
 )
 
-st.plotly_chart(fig)
+st.plotly_chart(fig, use_container_width=True)
 
 # Differences Section
 st.subheader("Compare Differences Between Maturing Dates")
@@ -56,7 +56,7 @@ fig2 = px.bar(
 # Format y-axis as percentage with 2 decimals
 fig2.update_yaxes(tickformat=".2%")
 
-st.plotly_chart(fig2)
+st.plotly_chart(fig2, use_container_width=True)
 
 st.write("Data Source: U.S. Department of the Treasury")
 
