@@ -3,6 +3,7 @@ import json
 import xmltodict
 import pandas as pd
 from datetime import datetime
+import re
 
 
 def pull_yield_curve_data(YYYYMM: str = None):
@@ -19,7 +20,7 @@ def pull_yield_curve_data(YYYYMM: str = None):
         
     headers = {"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"}
     
-    link = 'https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_real_yield_curve&field_tdr_date_value_month='
+    link = "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value_month="
     
     # Pull data from treasury.gov
     response = requests.get(link + YYYYMM, headers=headers)
@@ -42,17 +43,14 @@ def format_data(data: dict):
         # data[date] = {'date': {maturity: yield}}
         date = entry['d:NEW_DATE']['#text']
         data[date] = {}
-        for key in keys[1:]:
+        for key in keys[1:-1]:
             data[date][key[5:]] = entry[key]['#text']
-    
-    df = pd.DataFrame(data).T.reset_index().rename(columns={'index': 'date'})
-    df['date'] = pd.to_datetime(df['date'])
-    df['date'] = df['date'].dt.strftime('%Y-%m-%d')
-    df_melted = df.melt(id_vars='date', var_name='term', value_name='yield')
-    df_melted['yield'] = pd.to_numeric(df_melted['yield'])
-    df_melted['yield'] = df_melted['yield'] / 100
-    pivot = df_melted.pivot(index='term', columns='date', values='yield')
-    return pivot
+            
+    df = pd.DataFrame(data)
+    df.columns = pd.to_datetime(df.columns).strftime('%Y-%m-%d')
+    df.index.name = 'term'
+    df = df.astype(float) / 100
+    return df
 
 def year_ago_from_YYYMM(YYYYMM):
     YYYYMM = str(YYYYMM)
@@ -106,7 +104,7 @@ def yield_curve_full_data_pull(YYYYMM: str = None):
     if int(current_day) > 28:
         current_day = '28'
         
-    current_data.columns = ['LASTEST (' + x +')' for x in current_data.columns]
+    current_data.columns = ['LATEST (' + x +')' for x in current_data.columns]
     
     month_ago = month_ago_from_YYYMM(YYYYMM)
     # match day of month in current data
@@ -119,7 +117,8 @@ def yield_curve_full_data_pull(YYYYMM: str = None):
     last_year_data = last_year_data[[x for x in last_year_data.columns if x.split('-')[-1] == current_day +')']]
     
     stacked = pd.concat([current_data, month_ago, six_month_ago, last_year_data], axis=1)
-    # order terms index
-    order = ['5YEAR', '7YEAR', '10YEAR', '20YEAR', '30YEAR']
-    stacked = stacked.loc[order]
+    
+    # in this format 10YEAR seperate the num and title capitalization
+    stacked.index = [re.sub(r'(\d+)([A-Z]+)', r'\1 \2', x) for x in stacked.index]
+    
     return stacked

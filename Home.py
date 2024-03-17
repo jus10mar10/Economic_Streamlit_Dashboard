@@ -1,4 +1,5 @@
 import streamlit as st
+from modules.footer import footer
 
 st.title('Economic Dashboard')
 
@@ -6,3 +7,6 @@ st.image('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fircenterpr
         output_format='JPEG')
 
 st.subheader('Select a page from the sidebar to get started!')
+
+####################
+footer()
