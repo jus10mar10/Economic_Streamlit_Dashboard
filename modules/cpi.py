@@ -6,7 +6,7 @@ import os
 import streamlit as st
 
 def get_cpi_index(start_year: str = None, end_year: str = None):
-    api_key = st.secrets("CPI_API_KEY")
+    api_key = st.secrets["CPI_API_KEY"]
     if start_year is None:
         start_year = datetime.now().year
     if end_year is None:
@@ -24,4 +24,5 @@ def get_cpi_index(start_year: str = None, end_year: str = None):
     df.index = pd.to_datetime(df['year-month'])
     df['value'] = df['value'].astype(float)
     return df[['year-month', 'year', 'month', 'periodName', 'latest', 'value']]
+
     
