@@ -3,9 +3,13 @@ import json
 import pandas as pd
 from datetime import datetime
 import os
+import streamlit as st
 
 def api_key():
-    api_key = os.environ.get('CPI_API_KEY')
+    try:
+        api_key = os.environ.get('CPI_API_KEY')
+    except:
+        api_key = st.secrets("CPI_API_KEY")
     return api_key
 
 def get_cpi_index(start_year: str = None, end_year: str = None):
