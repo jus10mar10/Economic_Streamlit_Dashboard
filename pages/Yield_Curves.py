@@ -54,6 +54,8 @@ fig2 = px.bar(
     y=diff.values(),
     title=f"Difference between {anchor} and {comparison}",
     labels={"x": "Effective Date", "y": "Yield Difference (%)"},
+    # customize color
+    color_discrete_sequence=["#00FDDC" for _ in range(len(diff))],
 )
 
 # Format y-axis as percentage with 2 decimals
