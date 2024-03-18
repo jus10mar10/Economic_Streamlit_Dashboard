@@ -9,11 +9,5 @@ col2.metric('Unemployment Rate', 0.0, delta=0.0)
 col3.metric('GDP Growth Rate', 0.0, delta=0.0)
 st.text('Annual Rates change from previous year')
 
-st.divider()
-
-st.subheader('Upcoming Economic Events')
-
-
-
 ####################
 footer()
