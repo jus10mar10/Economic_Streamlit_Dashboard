@@ -3,10 +3,17 @@ from modules.footer import footer
 
 st.title('Economic Dashboard')
 
-st.image('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fircenterprises.com%2Fwp-content%2Fuploads%2F2020%2F06%2FDollar-Bill-scaled.jpeg&f=1&nofb=1&ipt=cfd660d5657526ece678e715cdcb1ddd1457386e298f921b3f80ad747d6aa101&ipo=images',
-        output_format='JPEG')
+col1, col2, col3 = st.columns([2, 2, 2])
+col1.metric('Inflation Rate', .0000, delta=0.0)
+col2.metric('Unemployment Rate', 0.0, delta=0.0)
+col3.metric('GDP Growth Rate', 0.0, delta=0.0)
+st.text('Annual Rates change from previous year')
 
-st.subheader('Select a page from the sidebar to get started!')
+st.divider()
+
+st.subheader('Upcoming Economic Events')
+
+
 
 ####################
 footer()

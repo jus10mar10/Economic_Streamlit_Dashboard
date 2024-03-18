@@ -11,7 +11,7 @@ def data_pull_yields():
     return data
 
 
-st.title("Yield Curve Viewer")
+st.title("Treasury Yield Curves")
 
 data = data_pull_yields()
 
@@ -45,6 +45,9 @@ anchor = st.selectbox("Select Anchor Maturity", data.index.unique(), index=10)
 comparison = st.selectbox("Select Comparison Maturity", data.index.unique(), index=6)
 
 diff = {col: data[col][anchor] - data[col][comparison] for col in data.columns}
+show_diff = st.checkbox("Show Data ", value=False)
+if show_diff:
+    st.table(diff)
 
 fig2 = px.bar(
     x=diff.keys(),
