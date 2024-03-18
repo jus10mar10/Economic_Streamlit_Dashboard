@@ -7,9 +7,10 @@ import streamlit as st
 
 def api_key():
     try:
+        st.write("CPI_API_KEY",  st.secrets("CPI_API_KEY") )
         api_key = os.environ.get('CPI_API_KEY')
     except:
-        api_key = st.secrets("CPI_API_KEY")
+        api_key = os.environ.get('CPI_API_KEY')
     return api_key
 
 def get_cpi_index(start_year: str = None, end_year: str = None):
