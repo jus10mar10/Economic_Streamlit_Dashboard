@@ -2,7 +2,6 @@ import requests
 import json
 import pandas as pd
 from datetime import datetime
-import os
 import streamlit as st
 
 def get_cpi_index(start_year: str = None, end_year: str = None):
