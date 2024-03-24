@@ -31,5 +31,15 @@ if cpi_data:
     
 st.area_chart(annual_pct_change)
 
+st.subheader('Period Over Period Change')
+
+data['period_change'] = data['value'].pct_change()
+
+st.line_chart(data['period_change'], color='#ffffff', use_container_width=True)
+
+st.subheader("Raw Data")
+
+st.area_chart(data['value'])
+
 ####################
 footer()
